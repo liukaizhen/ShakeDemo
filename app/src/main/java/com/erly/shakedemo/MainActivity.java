@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.erly.shakedemo.ifc.OnShakeListener;
+import com.erly.shakedemo.util.ShakeManager;
 import com.erly.shakedemo.util.Utils;
 
-public class MainActivity extends AppCompatActivity implements OnShakeListener{
+public class MainActivity extends AppCompatActivity implements OnShakeListener {
     private SoundPool mSoundPool;
     private int wxAudioID;
     private Vibrator mVibrator;

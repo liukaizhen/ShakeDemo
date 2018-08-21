@@ -1,4 +1,4 @@
-package com.erly.shakedemo;
+package com.erly.shakedemo.util;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,33 +7,33 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
+import com.erly.shakedemo.ShakeApplication;
+import com.erly.shakedemo.ifc.OnShakeListener;
+
+/**
+ * 摇一摇管理类
+ */
 public class ShakeManager implements SensorEventListener{
+    /**
+     * 传感器加速度时间间隔100ms
+     */
+    private static final int ACC_TIME = 100;
+    /**
+     * 摇一摇临界值
+     */
+    public static final int SHAKE_THRESHOLD = 300;
     private static ShakeManager ourInstance;
     private final SensorManager sensorManager;
     private final Sensor shakeSensor;
-    /**
-     * 传感器监听器, 摇一摇以后回调onShakeComplete方法
-     */
     protected OnShakeListener mShakeListener = null;
-    /**
-     * 传感器检测变化的时间间隔
-     */
-    private static final int UPDATE_INTERVAL_TIME = 100;
-    /**
-     * 默认的摇一摇传感器阀值,当摇晃速度达到这值后产生作用
-     */
-    public static final int DEFAULT_SHAKE_SPEED = 300;
+    private long mLastUpdateTime;//上次检测时间
+    private long lastListenerTime;//上次回调时间
     /**
      * 手机上一个位置时重力感应坐标
      */
     private float mLastX = 0.0f;
     private float mLastY = 0.0f;
     private float mLastZ = 0.0f;
-    /**
-     * 上次检测时间
-     */
-    private long mLastUpdateTime;
-    private long lastListenerTime;
 
     private ShakeManager() {
         sensorManager = (SensorManager) ShakeApplication.getContext()
@@ -93,7 +93,7 @@ public class ShakeManager implements SensorEventListener{
         long timeInterval = Math.abs(currentUpdateTime - mLastUpdateTime);
         long listenerInterval = Math.abs(currentUpdateTime - lastListenerTime);
 
-        if (UPDATE_INTERVAL_TIME > timeInterval) {
+        if (ACC_TIME > timeInterval) {
             return;
         }
         mLastUpdateTime = currentUpdateTime;
@@ -116,7 +116,7 @@ public class ShakeManager implements SensorEventListener{
         double speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ)
                 / timeInterval * 1000;
         // 达到速度阀值且两次间隔时间大于2s,回调给开发者
-        if (speed >= DEFAULT_SHAKE_SPEED && mShakeListener != null && listenerInterval > 2000) {
+        if (speed >= SHAKE_THRESHOLD && mShakeListener != null && listenerInterval > 2000) {
             lastListenerTime = currentUpdateTime;
             mShakeListener.onShakeComplete(event);
         }

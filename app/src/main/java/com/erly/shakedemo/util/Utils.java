@@ -5,12 +5,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 
+/**
+ * 工具类
+ */
 public class Utils {
     /**
      * 动画时间
      */
     private static final int ANIM_TIME = 300;
 
+    /**
+     * 微信摇一摇动画
+     * @param topView
+     * @param bottomView
+     */
     public static void starWxShakeAnim(View topView,View bottomView){
         /**
          * 上动画
