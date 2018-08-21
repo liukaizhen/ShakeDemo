@@ -9,6 +9,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //清单文件中使用
+        manifestPlaceholders=[AMAP_KEY_VALUE: AMAP_KEY_VALUE]
+        //通过BuildConfig调用,可以根据不同环境配置 BASE_URL
+        //buildConfigField("String", "AMAP_KEY_VALUE", "\"${AMAP_KEY_VALUE}\"")
+        ndk{//设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
     buildTypes {
         release {
@@ -19,10 +26,17 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    /**
+     * 高德地图依赖
+     * 其中：导航依赖包含3D地图
+     */
+    implementation 'com.amap.api:navi-3dmap:6.2.0_3dmap6.4.0'
+    implementation 'com.amap.api:search:6.1.0'
+    implementation 'com.amap.api:location:4.2.0'
 }
