@@ -99,7 +99,7 @@ public class ShakeActivity extends AppCompatActivity implements OnShakeListener,
             super.handleMessage(msg);
             if (msg.what == 0){
                 pb.setVisibility(View.INVISIBLE);
-                tvMsg.setText("恭喜您中奖啦！兑换码："+ new Random().nextInt());
+                tvMsg.setText("恭喜您中奖啦！兑换码："+ Math.abs(new Random().nextInt()));
             }
         }
     };

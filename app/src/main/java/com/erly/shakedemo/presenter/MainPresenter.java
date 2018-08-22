@@ -40,7 +40,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements AMap.OnMa
     public static final String GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast";
     private static final String TAG = MainPresenter.class.getSimpleName();
     private LatLng mapLatLng = new LatLng(34.7522529795,113.6665302515);
-    private static final int ZOOM = 15;//比例尺
+    private static final int ZOOM = 14;//比例尺
     private AMapLocationClient locationClient;
     private Marker locationMarker;
     private boolean locationIng;
@@ -141,12 +141,12 @@ public class MainPresenter extends BasePresenter<IMainView> implements AMap.OnMa
         //添加围栏
         mGeoFenceClient.addGeoFence(
                 new DPoint(mapLatLng.latitude,mapLatLng.longitude),
-                300,
+                500,
                 "customID");
         //添加绘制面
         circle = aMap.addCircle(new CircleOptions()
                 .center(mapLatLng)
-                .radius(300)
+                .radius(500)
                 .strokeColor(Color.CYAN)
                 .fillColor(Color.TRANSPARENT));
 
