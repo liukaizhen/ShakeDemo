@@ -1,59 +1,63 @@
 package com.erly.shakedemo;
 
-import android.hardware.SensorEvent;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
 import android.os.Bundle;
-import android.widget.ImageView;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.MapView;
+import com.erly.shakedemo.base.BaseActivity;
+import com.erly.shakedemo.ifc.IMainView;
+import com.erly.shakedemo.presenter.MainPresenter;
 
-import com.erly.shakedemo.ifc.OnShakeListener;
-import com.erly.shakedemo.util.ShakeManager;
-import com.erly.shakedemo.util.Utils;
-
-public class MainActivity extends AppCompatActivity implements OnShakeListener {
-    private SoundPool mSoundPool;
-    private int wxAudioID;
-    private Vibrator mVibrator;
-    private ImageView ivTop;
-    private ImageView ivBottom;
+public class MainActivity extends BaseActivity<IMainView,MainPresenter> implements IMainView{
+    private MapView mMapView ;
+    private AMap aMap;
+    //定位权限组
+    protected String[] locationPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ivTop = findViewById(R.id.main_shake_top);
-        ivBottom = findViewById(R.id.main_shake_bottom);
+        mMapView = findViewById(R.id.map_view);
+        mMapView.onCreate(savedInstanceState);
+        if (aMap == null)aMap = mMapView.getMap();
+        mPresenter.initMap(aMap);
+        checkPermissions(0,locationPermissions);
+    }
 
-        mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        mSoundPool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 5);
-        wxAudioID = mSoundPool.load(this, R.raw.weichat_audio, 1);
-        ShakeManager.getInstance().setShakeListener(this);
+    @Override
+    protected MainPresenter createPresenter() {
+        return new MainPresenter();
+    }
+
+    @Override
+    protected void onPermissionsGranted(int code, String[] permissions) {
+        mPresenter.startLocation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ShakeManager.getInstance().register(this);
+        mMapView.onResume();
     }
 
     @Override
-    protected void onStop() {
-        ShakeManager.getInstance().unRegister();
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
 
     @Override
-    public void onShakeComplete(SensorEvent event) {
-        Utils.starWxShakeAnim(ivTop,ivBottom);
-        mVibrator.vibrate(300);
-        mSoundPool.play(wxAudioID, 1, 1, 0, 0, 1);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-        mSoundPool.release();
         super.onDestroy();
+        mMapView.onDestroy();
     }
 }

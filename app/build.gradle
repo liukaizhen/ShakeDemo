@@ -10,10 +10,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //清单文件中使用
-        manifestPlaceholders=[AMAP_KEY_VALUE: AMAP_KEY_VALUE]
+        manifestPlaceholders = [AMAP_KEY_VALUE: AMAP_KEY_VALUE]
         //通过BuildConfig调用,可以根据不同环境配置 BASE_URL
         //buildConfigField("String", "AMAP_KEY_VALUE", "\"${AMAP_KEY_VALUE}\"")
-        ndk{//设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+        ndk {//设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
     }

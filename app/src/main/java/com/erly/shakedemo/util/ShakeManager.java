@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
-import com.erly.shakedemo.ShakeApplication;
+import com.erly.shakedemo.base.MyApp;
 import com.erly.shakedemo.ifc.OnShakeListener;
 
 /**
@@ -36,7 +36,7 @@ public class ShakeManager implements SensorEventListener{
     private float mLastZ = 0.0f;
 
     private ShakeManager() {
-        sensorManager = (SensorManager) ShakeApplication.getContext()
+        sensorManager = (SensorManager) MyApp.getContext()
                 .getSystemService(Context.SENSOR_SERVICE);
         shakeSensor = sensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

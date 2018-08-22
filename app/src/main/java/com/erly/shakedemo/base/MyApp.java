@@ -1,10 +1,10 @@
-package com.erly.shakedemo;
+package com.erly.shakedemo.base;
 
 import android.app.Application;
 import android.content.Context;
 
-public class ShakeApplication extends Application {
-    private static ShakeApplication app;
+public class MyApp extends Application {
+    private static MyApp app;
 
     @Override
     public void onCreate() {
